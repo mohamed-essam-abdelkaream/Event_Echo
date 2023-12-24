@@ -1,6 +1,6 @@
 # event_echo
-
-A new Flutter project.
+📰
+Event_Echo is a news app that provides users with timely and relevant information about current events, developments, and news stories.
 
 ## Getting Started
 
