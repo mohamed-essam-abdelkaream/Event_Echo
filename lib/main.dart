@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:event_echo/data/dio_helper.dart';
 import 'package:event_echo/ui/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'constants/bloc_observable.dart';
 
 void main() {
   Bloc.observer = MyBlocObserver();
+  DioHelper.init();
   runApp(MyApp());
 }
 
@@ -28,6 +30,9 @@ class MyApp extends StatelessWidget {
           systemOverlayStyle: SystemUiOverlayStyle(
               statusBarColor: Colors.white,
               statusBarIconBrightness: Brightness.dark),
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.deepOrange
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           type: BottomNavigationBarType.fixed,

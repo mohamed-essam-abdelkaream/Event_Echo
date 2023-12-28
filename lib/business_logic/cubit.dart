@@ -1,5 +1,7 @@
+
 import 'package:bloc/bloc.dart';
 import 'package:event_echo/business_logic/states.dart';
+import 'package:event_echo/data/dio_helper.dart';
 import 'package:event_echo/ui/bottom_nav_bar_screens/business.dart';
 import 'package:event_echo/ui/bottom_nav_bar_screens/science.dart';
 import 'package:event_echo/ui/bottom_nav_bar_screens/settings.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EventCubit extends Cubit<EventStates> {
   EventCubit() : super(EventInitialState());
+  @override
 
   static EventCubit get(context) => BlocProvider.of(context);
 
@@ -33,11 +36,29 @@ class EventCubit extends Cubit<EventStates> {
     Science(),
     Sports(),
     Business(),
-    Settings()
+    Settings(),
   ];
 
   void bottomNavBarChange(index) {
     currentIndex = index;
     emit(EventBottomNavState());
   }
+
+  List<dynamic> business = [];
+  void getBusiness() {
+    emit(EventLoadingState());
+    DioHelper.getData(url: 'v2/top-headlines', query: {
+      'country': 'eg',
+      'category': 'business',
+      'apiKey': '634013ffa92f417aa944c39794f7ea78',
+    }).then((value) {
+      business = value.data['articles'];
+      print(business[0]['title']);
+      emit(EventDetBusinessSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(EventDetBusinessErrorState(error));
+    });
+  }
+
 }
